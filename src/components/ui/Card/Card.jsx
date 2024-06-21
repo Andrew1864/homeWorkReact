@@ -11,6 +11,7 @@
  * @param {number} [props.details.rating] - Рейтинг карточки (необязательно).
  * @param {string} props.details.imgSrc - Путь к изображению.
  * @param {function} props.onClick - Обработчик клика по карточке (необязательно).
+ * @param {boolean} props.isFavorite - Карточка добав. в сохранения или нет (необязательно).
  * @returns {JSX.Element} Элемент JSX.
  */
 export const Card = (props) => {

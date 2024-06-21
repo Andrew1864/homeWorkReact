@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 const Cards = () => {
   const navigate = useNavigate();
 
-  // Стейт для продуктов (начальное значение из data.js)
-  const [products, setProducts] = useState(initialProducts);
+  // // Стейт для продуктов (начальное значение из data.js)
+  // const [products, setProducts] = useState(initialProducts);
 
   useEffect(() => {
     // Получаем данные из localStorage

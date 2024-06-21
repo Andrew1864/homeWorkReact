@@ -31,7 +31,7 @@ const CardDetail = () => {
       <div className="container mx-auto p-4">
         <Link
           to="/cards"
-          className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex"
+          className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex "
         >
           Вернуться назад
         </Link>
