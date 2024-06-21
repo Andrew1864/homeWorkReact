@@ -44,4 +44,4 @@ const useProductsStore = create((set) => {
   };
 });
 
-export default uuseProductsStore
+export default useProductsStore
