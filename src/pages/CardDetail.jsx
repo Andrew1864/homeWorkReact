@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
-import { initialProducts } from "../../data.js";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import useProductsStore from "../store/useProductsStore.js";
 
 const CardDetail = () => {
