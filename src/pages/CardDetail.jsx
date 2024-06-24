@@ -2,29 +2,17 @@ import { useParams } from "react-router-dom";
 import { initialProducts } from "../../data.js";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import useProductsStore from "../store/useProductsStore.js";
 
 const CardDetail = () => {
-  const [isFavorite, setFavorite] = useState(false); // Стейт для того, чтобы пометить товар сохраненным или нет.
-
   const { id } = useParams();
 
+  const { products, setFavorite } = useProductsStore();
+
   // Находим карточку по id.
-  const product = initialProducts?.find((product) => product?.id === id);
+  const product = products?.find((product) => product?.id === id);
 
-  useEffect(() => {
-    // Получаем данные из localStorage
-    const storedFavoriteProducts = localStorage.getItem("favorite");
-
-    // Если данные есть в localStorage, устанавливаем начальное состояние продуктов
-    if (storedFavoriteProducts) {
-      const favoriteProducts = JSON.parse(storedFavoriteProducts);
-
-      const isProductInStorage = favoriteProducts.includes(id);
-
-      // Обновляем стейт сохраненным товаром.
-      setFavorite(isProductInStorage);
-    }
-  }, []);
+ 
 
   return (
     <section className="card-details">
@@ -38,9 +26,9 @@ const CardDetail = () => {
         <div className="max-w-md rounded shadow-lg relative">
           <img className="w-full" src={product?.imgSrc} alt={product?.title} />
           <button
-            className={`absolute top-0 left-0 m-2 p-2 rounded-full ${
-              isFavorite ? "text-red-500" : "text-white"
-            }`}
+            className={`absolute top-0 left-0 m-2 p-2 rounded-full 
+              ${product?.isFavorite ? "text-red-500" : "text-white"}`}
+              onClick={() => setFavorite(id)}
           >
             <svg
               className="w-6 h-6 fill-current"

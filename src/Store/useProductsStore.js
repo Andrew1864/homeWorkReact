@@ -1,7 +1,9 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 import { initialProducts } from "../../data.js";
-import { json } from 'react-router-dom';
 
+/**
+ * Стор для управления продуктами и состоянием сохраненных продуктов.
+ */
 const useProductsStore = create((set) => {
   // Загрузка избранных продуктов из localStorage.
   const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -11,37 +13,42 @@ const useProductsStore = create((set) => {
     ...product,
     isFavorite: storedFavorites?.includes(product?.id),
   }));
-    /**
+
+  /**
    * Переключает состояние сохраненного продукта по id.
    * @param {string} id - id продукта.
    * @returns {Object} Возвращает обновленное состояние продуктов.
    */
-  const setFavorite =(id) =>{
-    set((state) =>{
-      // Обновления продуктов на странице, переключая состояние сох-го продукта 
-      const updateProducts = state?.map((product) =>{
+  const setFavorite = (id) =>
+    set((state) => {
+      // Обновляем продукты на странице, переключая состояние сохраненного продукта
+      const updatedProducts = state?.products?.map((product) => {
         if (product?.id === id) {
-          product.isFavorite = !product.isFavorite;
+          product.isFavorite = !product?.isFavorite;
         }
         return product;
       });
 
-// Обновляем id сохраненок для записи в localStorage 
-      const updateFavorites = updateProducts
-      ?.filter((product) => product?.isFavorite)
-      ?.map((product) => product.id);
+      // Обновляем id сохраненок для записи в localStorage
+      const updatedFavorites = updatedProducts
+        ?.filter((product) => product?.isFavorite)
+        ?.map((product) => product?.id);
 
-      localStorage.setItem("Favorites", JSON.stringify(updateFavorites));
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
 
-      // Вщзращение обновленных продуктов 
-        return { product: updateProducts };
+      // Возвращаем обновленное состояние продуктов
+      return { products: updatedProducts };
     });
 
-    return {
-      products,
-      setFavorite,
-    };
+  return {
+    products,
+    setFavorite,
   };
+
+  // {
+  //   products: [...], // массив продуктов (это и есть state, который принимает стор)
+  //   toggleFavorite: function, // функция для переключения состояния сохраненного продукта по id
+  // }
 });
 
-export default useProductsStore
+export default useProductsStore;
