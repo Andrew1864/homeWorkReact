@@ -5,19 +5,18 @@ import useProductsStore from "../store/useProductsStore.js";
 const CardDetail = () => {
   const { id } = useParams();
 
-  const { products, setFavorite } = useProductsStore();
+  const { getProductById, setFavorite } = useProductsStore();
 
-  // Находим карточку по id.
-  const product = products?.find((product) => product?.id === id);
-
- 
+  // // Находим карточку по id.
+  // const product = products?.find((product) => product?.id === id);
+  const product = getProductById(id)
 
   return (
     <section className="card-details">
       <div className="container mx-auto p-4">
         <Link
           to="/cards"
-          className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex "
+          className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex mt-5"
         >
           Вернуться назад
         </Link>

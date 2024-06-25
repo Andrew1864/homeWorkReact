@@ -14,6 +14,9 @@ const useProductsStore = create((set) => {
     isFavorite: storedFavorites?.includes(product?.id),
   }));
 
+// Находим карточку по id.
+  const getProductById = id => products?.find((product) => product?.id === id) || null;
+  
   /**
    * Переключает состояние сохраненного продукта по id.
    * @param {string} id - id продукта.
@@ -39,10 +42,14 @@ const useProductsStore = create((set) => {
       // Возвращаем обновленное состояние продуктов
       return { products: updatedProducts };
     });
+ // Получение карточек в сохраненок
+    const getFavoriteProduct = () => products?.filter(product => product?.isFavorite);
 
   return {
     products,
+    getProductById,
     setFavorite,
+    getFavoriteProduct,
   };
 
   // {

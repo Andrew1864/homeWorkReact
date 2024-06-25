@@ -3,12 +3,14 @@ import MainLayout from "../../layouts/MainLayout.jsx";
 import Home from "../../pages/Home.jsx";
 import Cards from "../../pages/Cards.jsx";
 import CardDetail from "../../pages/CardDetail.jsx";
+import FavoriteList from "../../pages/FavoriteLists.jsx";
 
 /** Массив роутов приложения */
 const routes = [
   { path: "/", element: <Home /> },
   { path: "cards", element: <Cards /> },
   { path: "cards/:id", element: <CardDetail /> },
+  { path: "Favorites", element: <FavoriteList /> },
 ];
 
 /**
