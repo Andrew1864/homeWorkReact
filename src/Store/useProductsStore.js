@@ -14,48 +14,50 @@ const useProductsStore = create((set) => {
     isFavorite: storedFavorites?.includes(product?.id),
   }));
 
-// Находим карточку по id.
-  const getProductById = id => products?.find((product) => product?.id === id) || null;
-  
+  /**
+    Находит продукт по id.
+    @param {string} id - id продукта.
+    @returns {Object|null} Возвращает найденный продукт или null.
+    */
+  const getProductById = id => products?.find(product => product?.id === id) || null;
+
   /**
    * Переключает состояние сохраненного продукта по id.
    * @param {string} id - id продукта.
-   * @returns {Object} Возвращает обновленное состояние продуктов.
    */
-  const setFavorite = (id) =>
-    set((state) => {
-      // Обновляем продукты на странице, переключая состояние сохраненного продукта
-      const updatedProducts = state?.products?.map((product) => {
-        if (product?.id === id) {
-          product.isFavorite = !product?.isFavorite;
-        }
-        return product;
-      });
-
-      // Обновляем id сохраненок для записи в localStorage
-      const updatedFavorites = updatedProducts
-        ?.filter((product) => product?.isFavorite)
-        ?.map((product) => product?.id);
-
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-
-      // Возвращаем обновленное состояние продуктов
-      return { products: updatedProducts };
+  const setFavorite = (id) => {
+    // Обновляем продукты на странице, переключая состояние сохраненного продукта
+    const updatedProducts = products?.map((product) => {
+      if (product?.id === id) {
+        product.isFavorite = !product?.isFavorite;
+      }
+      return product; 
     });
- // Получение карточек в сохраненок
-    const getFavoriteProduct = () => products?.filter(product => product?.isFavorite);
+
+    // Обновляем id сохраненок для записи в localStorage
+    const updatedFavorites = updatedProducts
+      ?.filter(product => product?.isFavorite)
+      ?.map(product => product?.id);
+
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+    // Обновляем состояние.
+    set({ products: updatedProducts });
+  }
+
+  /**
+   * Получает все сохраненные продукты.
+   * @returns {Array} Массив всех сохраненных продуктов.
+   */
+  const getFavoriteProducts = () => products?.filter(product => product?.isFavorite);
 
   return {
     products,
     getProductById,
     setFavorite,
-    getFavoriteProduct,
+    getFavoriteProducts,
   };
-
-  // {
-  //   products: [...], // массив продуктов (это и есть state, который принимает стор)
-  //   toggleFavorite: function, // функция для переключения состояния сохраненного продукта по id
-  // }
 });
+
 
 export default useProductsStore;

@@ -8,7 +8,6 @@ const CardDetail = () => {
   const { getProductById, setFavorite } = useProductsStore();
 
   // // Находим карточку по id.
-  // const product = products?.find((product) => product?.id === id);
   const product = getProductById(id)
 
   return (

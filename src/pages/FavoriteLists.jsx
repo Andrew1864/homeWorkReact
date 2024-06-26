@@ -6,16 +6,16 @@ const FavoriteList = () => {
 
 
   // Стор для работы с продуктами
-  const { getFavoriteProduct, setFavorite } = useProductsStore();
+  const { getFavoriteProducts, setFavorite } = useProductsStore();
 
-  const favoriteProducts = getFavoriteProduct();
+  const favoriteProducts = getFavoriteProducts();
 
   
   return (
-    <section className="products">
+    <section className="favorites">
       <div className="container mx-auto px-4">
-      <h3 className="flex mb-3">Сохраненные ранее товары</h3>
-      <Link
+        <h3 className="flex mb-3">Сохраненные ранее товары</h3>
+        <Link
           to="/cards"
           className=" text-indigo-500 hover:text-indigo-600 border-b-2 border-b-indigo-500 mb-8 inline-flex"
         >
@@ -25,10 +25,10 @@ const FavoriteList = () => {
           {!!favoriteProducts &&
             favoriteProducts.map((product) => (
               <Card
-                key={product?.id}
-                details={product}
-                onToggleFavorite={setFavorite}
-              />
+              key={product?.id}
+              details={product}
+              onToggleFavorite={setFavorite}
+            />
             ))}
         </div>
       </div>

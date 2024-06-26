@@ -16,12 +16,15 @@ const Header = () => {
 
   const navigate = useNavigate(); // хук для роутинга
 
+  const { getFavoriteProducts } = useProductsStore(); 
+
+  const favoriteProducts = getFavoriteProducts();
+
   // Обработчик клика по карточке (для открытия сайдбара, например)
-  const handleCardClick = (id) => {
-    navigate(`/cards/${id}`);
+  const handleOpenFavorite = () => {
+    navigate(`/Favorites`);
   };
 
-  const { getFavoriteProduct } = useProductsStore();
 
   /**
    * Определяет, активна ли ссылка.
@@ -57,7 +60,7 @@ const Header = () => {
       </nav>
       <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <button type="button"
-        onClick={handleCardClick}
+        onClick={handleOpenFavorite}
         className="relative bg-transparent p-1 mr-3 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
         <svg
@@ -71,6 +74,11 @@ const Header = () => {
                 <path d="M12,4A5,5,0,1,1,7,9a5,5,0,0,1,5-5m0-2a7,7,0,1,0,7,7A7,7,0,0,0,12,2Z" />
                 <rect className="fill-none" width="32" height="32" />
               </svg>
+              {!!favoriteProducts?.length && (
+                <span className="w-4 h-4 inline-flex justify-center justify-items-center bg-indigo-500 rounded-3xl absolute -top-2 -right-2 color-white">
+                  {favoriteProducts?.length}
+                </span>
+              )}
         </button>
         <button
           type="button"
