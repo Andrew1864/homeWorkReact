@@ -17,6 +17,7 @@ export const Card = (props) => {
   const {
     id,
     title,
+    name,
     category,
     description,
     price,
@@ -70,7 +71,7 @@ export const Card = (props) => {
         </button>
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-medium mb-2">{title}</h3>
+        <h3 className="text-lg font-medium mb-2">{name}</h3>
         {description && (
           <p className="text-gray-600 text-sm mb-4">{description}</p>
         )}
