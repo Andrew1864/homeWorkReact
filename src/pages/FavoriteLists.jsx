@@ -1,16 +1,19 @@
 import { Card } from "../components/ui/Card/Card.jsx";
 import useProductsStore from "../store/useProductsStore.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FavoriteList = () => {
-
+  const navigate = useNavigate();  // хук для роутинга
 
   // Стор для работы с продуктами
   const { getFavoriteProducts, setFavorite } = useProductsStore();
 
   const favoriteProducts = getFavoriteProducts();
 
-  
+  const handleCardClick = (id) => {
+    navigate(`/cards/${id}`)
+  }
+
   return (
     <section className="favorites">
       <div className="container mx-auto px-4">
@@ -25,10 +28,11 @@ const FavoriteList = () => {
           {!!favoriteProducts &&
             favoriteProducts.map((product) => (
               <Card
-              key={product?.id}
-              details={product}
-              onToggleFavorite={setFavorite}
-            />
+                key={product?.id}
+                details={product}
+                onCardClick={handleCardClick}
+                onToggleFavorite={setFavorite}
+              />
             ))}
         </div>
       </div>
