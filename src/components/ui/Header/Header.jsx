@@ -77,7 +77,7 @@ const Header = () => {
                 <rect className="fill-none" width="32" height="32" />
               </svg>
               {!!favoriteProducts?.length && (
-                <span className="w-4 h-4 inline-flex justify-center justify-items-center bg-indigo-500 rounded-3xl absolute -top-2 -right-2 color-white">
+                <span className="w-4 h-4 mb-1 text-xs/6 px-1 leading-4 text-white inline-flex justify-center justify-items-center bg-indigo-500 rounded-3xl absolute  bottom-4 right-0">
                   {favoriteProducts?.length}
                 </span>
               )}
