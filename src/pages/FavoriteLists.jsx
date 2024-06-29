@@ -17,13 +17,12 @@ const FavoriteList = () => {
   return (
     <section className="favorites">
       <div className="container mx-auto px-4">
-        <h3 className="flex  mb-4 text-4xl font-bold">Сохраненные ранее товары.</h3>
         <Link
           to="/cards"
-          className=" text-indigo-500 hover:text-indigo-600 border-b-2 border-b-indigo-500 mb-8 inline-flex"
-        >
+          className=" text-indigo-500 hover:text-indigo-600 border-b-2 border-b-indigo-500 mb-8 inline-flex">
           Вернуться карточкам
         </Link>
+        <h3 className="flex  mb-4 text-4xl font-bold">Сохраненные ранее товары.</h3>
         <div className="flex flex-wrap gap-6">
           {!!favoriteProducts &&
             favoriteProducts.map((product) => (
