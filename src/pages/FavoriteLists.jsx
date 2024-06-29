@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Alert from "../components/ui/Alert/Alert.jsx";
 import { Card } from "../components/ui/Card/Card.jsx";
 import useProductsStore from "../store/useProductsStore.js";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +15,8 @@ const FavoriteList = () => {
   const handleCardClick = (id) => {
     navigate(`/cards/${id}`)
   }
+
+  const [isShowAlert, setShowAlert] = useState(false);
 
   return (
     <section className="favorites">
@@ -34,6 +38,12 @@ const FavoriteList = () => {
               />
             ))}
         </div>
+
+        <button onClick={() => setShowAlert(true)}>Click</button>
+        <Alert isOpen={isShowAlert} variant="success">
+         
+        </Alert>
+
       </div>
     </section>
   );
