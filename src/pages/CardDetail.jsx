@@ -5,7 +5,7 @@ import useProductsStore from "../store/useProductsStore.js";
 const CardDetail = () => {
   const { id } = useParams();
 
-  const { getProductById, setFavorite } = useProductsStore();
+  const { getProductById, onToggleFavorite } = useProductsStore();
 
   // // Находим карточку по id.
   const product = getProductById(id)
@@ -25,7 +25,7 @@ const CardDetail = () => {
           <button
             className={`absolute top-0 left-0 m-2 p-2 rounded-full 
               ${product?.isFavorite ? "text-red-500" : "text-white"}`}
-              onClick={() => setFavorite(id)}
+              onClick={() => onToggleFavorite(id)}
           >
             <svg
               className="w-6 h-6 fill-current"

@@ -25,7 +25,7 @@ const useProductsStore = create((set) => {
    * Переключает состояние сохраненного продукта по id.
    * @param {string} id - id продукта.
    */
-  const setFavorite = (id) => {
+  const onToggleFavorite = (id) => {
     // Обновляем продукты на странице, переключая состояние сохраненного продукта
     const updatedProducts = products?.map((product) => {
       if (product?.id === id) {
@@ -54,7 +54,7 @@ const useProductsStore = create((set) => {
   return {
     products,
     getProductById,
-    setFavorite,
+    onToggleFavorite,
     getFavoriteProducts,
   };
 });

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Alert from "../Alert/Alert";
 
 /**
  * Компонент карточка.
@@ -29,18 +27,16 @@ export const Card = (props) => {
     isFavorite,
   } = props.details;
 
-  const { onCardClick, onToggleFavorite } = props;
+  const { onCardClick, onHeartClick } = props;
 
-  // На показ Alert 
-  const [isShowAlert, setShowAlert] = useState(false);
 
   // Обработчик клика на иконку сердечка
   const handleFavorite = (event) => {
     event.stopPropagation(); // Предотвр. всплытие события
-    if (onToggleFavorite) {
-      onToggleFavorite(id);
+    if (onHeartClick) {
+      onHeartClick(id);
     }
-    setShowAlert(true) // вызываем компанент в клике по сердечку
+
   };
 
   const handleCardClick = () => {
@@ -50,6 +46,7 @@ export const Card = (props) => {
   }
 
   return (
+    <>
     <div
       onClick={handleCardClick}
       className="max-w-sm md:max-w-sm lg:max-w-sm rounded-md overflow-hidden shadow-md hover:shadow-lg mb-8 cursor-pointer"
@@ -92,9 +89,7 @@ export const Card = (props) => {
           <span className="font-bold text-lg">{price}$</span>
         </div>
       </div>
-      <Alert isOpen={isShowAlert} variant="success">
-
-      </Alert>
     </div>
+    </>
   );
 };
