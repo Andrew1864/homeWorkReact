@@ -1,18 +1,41 @@
+import { stringify } from "postcss";
 import { create } from "zustand";
-import { initialProducts } from "../../data.js";
+// import { initialProducts } from "../../data.js";
 
 /**
  * Стор для управления продуктами и состоянием сохраненных продуктов.
  */
 const useProductsStore = create((set) => {
+  let products;
+
   // Загрузка избранных продуктов из localStorage.
   const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
   // Инициализация продуктов с учетом сохраненных состояний
-  const products = initialProducts?.map((product) => ({
-    ...product,
-    isFavorite: storedFavorites?.includes(product?.id),
-  }));
+  // const products = initialProducts?.map((product) => ({
+  //   ...product,
+  //   isFavorite: storedFavorites?.includes(product?.id),
+  // }));
+  (async () => {
+      try{
+        // Выполнение запроса
+        const response = await fetch('http://localhost:3000/products')
+        if(!response?.ok) {
+          throw new error("Failed to fetch products");
+        }
+        // Асинхроная сериализация
+        const data = await response?.json()
+        // Перезапись переменной на полученные данные
+        products = data?.map((product) => ({
+            ...product,
+            isFavorite: storedFavorites?.includes(product?.id),
+          }));
+          set({ products });
+      }
+      catch(error){
+        console.error("Error fetching products");
+      }
+  })();
+
 
   /**
     Находит продукт по id.
@@ -31,7 +54,7 @@ const useProductsStore = create((set) => {
       if (product?.id === id) {
         product.isFavorite = !product?.isFavorite;
       }
-      return product; 
+      return product;
     });
 
     // Обновляем id сохраненок для записи в localStorage
