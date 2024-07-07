@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
 import useProductsStore from "../store/useProductsStore.js";
 
 const CardDetail = () => {
@@ -15,9 +16,9 @@ const CardDetail = () => {
       <div className="container mx-auto p-4">
         <Link
           to="/cards"
-          className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex mt-5"
-        >
-          Вернуться назад
+          className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex mt-5">
+          <IoIosArrowBack className="mr-1 w-5 h-5" />
+          Back
         </Link>
         <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
         <div className="max-w-md rounded shadow-lg relative">
@@ -25,7 +26,7 @@ const CardDetail = () => {
           <button
             className={`absolute top-0 left-0 m-2 p-2 rounded-full 
               ${product?.isFavorite ? "text-red-500" : "text-white"}`}
-              onClick={() => onToggleFavorite(id)}
+            onClick={() => onToggleFavorite(id)}
           >
             <svg
               className="w-6 h-6 fill-current"

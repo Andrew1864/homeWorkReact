@@ -3,6 +3,7 @@ import Alert from "../components/ui/Alert/Alert.jsx";
 import { Card } from "../components/ui/Card/Card.jsx";
 import useProductsStore from "../store/useProductsStore.js";
 import { Link, useNavigate } from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
 
 const FavoriteList = () => {
   const navigate = useNavigate();  // хук для роутинга
@@ -45,8 +46,9 @@ const FavoriteList = () => {
         <div className="container mx-auto px-4">
           <Link
             to="/cards"
-            className=" text-indigo-500 hover:text-indigo-600 border-b-2 border-b-indigo-500 mb-8 inline-flex">
-            Вернуться карточкам
+            className=" text-gray-600 hover:text-gray-900 mb-8 inline-flex mt-5">
+            <IoIosArrowBack className="mr-1 w-5 h-5" />
+            Back
           </Link>
           <h3 className="flex  mb-4 text-4xl font-bold">Сохраненные ранее товары.</h3>
           <div className="flex flex-wrap gap-6">

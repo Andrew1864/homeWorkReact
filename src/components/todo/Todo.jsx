@@ -21,6 +21,7 @@ function TodoList() {
         newTodos.splice(index, 1);
         setTodos(newTodos);
     };
+    
     return (
         <div>
             <form>
@@ -28,7 +29,7 @@ function TodoList() {
                     className="shadow appearance-none border rounded w-80 mr-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     value={inputValue}
                     onChange={handleChange} />
-                <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-normal py-2 px-4 rounded" onClick={handleSubmit}>Add Todo</button>
+                <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-normal py-2 px-4 rounded" onClick={handleSubmit}>Add Task</button>
             </form>
             <ul className='p-4'>
                 {todos.map((todo, index) => (
@@ -40,7 +41,8 @@ function TodoList() {
                         </span>
                         <button
                             className="bg-white hover:bg-gray-100 text-gray-800 font-normal py-2 px-4 border border-gray-400 rounded shadow"
-                            onClick={() => handleDelete(index)}>Delete
+                            onClick={() => handleDelete(index)}>
+                            Delete
                         </button>
                     </li>
                 ))}
