@@ -1,4 +1,4 @@
-import Todo from "../components/todo/Todo"
+
 import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -15,7 +15,6 @@ const Admin = () => {
                     Back
                 </Link>
                 <h2 className="mb-4 text-4xl font-bold">Задачи.</h2>
-                <Todo />
             </div>
         </section >
     )
