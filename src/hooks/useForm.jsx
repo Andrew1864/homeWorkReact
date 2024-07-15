@@ -12,15 +12,15 @@ import { useState } from "react";
 
 export function useForm(initialState, setNewState) {
 
-    const [formData, setfromData] = useState(initialState); // Состояние формы 
+    const [formData, setFormData] = useState(initialState); // Состояние формы 
 
     const handleInputChange = (event) =>{
         const { name, value } = event?.target; // Извлекаем имя поля и его значение из события 
         // Обновление стейта 
-        setfromData({
+        setFormData({
             ...formData,
             [name]: value,
-        })
+        });
     };
 
     const handleSubmit = (event) => {
@@ -36,12 +36,12 @@ export function useForm(initialState, setNewState) {
         } else {
             console.log("Отправленые данные", formData);
 
-            setNewState(formData); // Данные поля не содержат пустых полей 
+            setNewState && setNewState(formData); // Данные поля не содержат пустых полей 
             resetForm(); // Очистка формы 
         };
     };
 
-    const resetForm = () => setfromData(initialState); // Функция для сброса формы 
+    const resetForm = () => setFormData(initialState); // Функция для сброса формы 
 
     return {
         formData,
