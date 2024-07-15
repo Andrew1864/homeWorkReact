@@ -44,12 +44,12 @@ export const Drawer = ({
 
 
     useEffect(() => {
-        if(isOpen) {
-            document.querySelector("mousdown", handleClick);
-            document.querySelector("keydown", handleKeyPress);
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClick);
+            document.addEventListener("keydown", handleKeyPress);
         }
         return () => {
-            document.removeEventListener("mousdown", handleClick);
+            document?.removeEventListener("mousedown", handleClick);
             document.removeEventListener("keydown", handleKeyPress);
         }
     }, [isOpen, handleClick, handleKeyPress]);
@@ -57,29 +57,28 @@ export const Drawer = ({
     return (
         isOpen &&
         createPortal(
-          <div className="absolute z-20 top-0 left-0 right-0 bottom-0 bg-opacity-50 bg-black">
-            <aside
-              ref={drawerRef}
-              className={`fixed top-0 bottom-0 ${
-                align === "right" ? "right-0" : "left-0"
-              } right-0 z-20 w-2/6 p-8 bg-white transition-transform duration-300 ease-in-out`}
-            >
-              <header className="flex justify-between mb-4">
-                {title && <h2 className="text-xl font-bold">{title}</h2>}
-                <button
-                  onClick={closeDrawer}
-                  className="text-gray-600 hover:text-gray-800"
+            <div className="absolute z-20 top-0 left-0 right-0 bottom-0 bg-opacity-50 bg-black">
+                <aside
+                    ref={drawerRef}
+                    className={`fixed top-0 bottom-0 ${align === "right" ? "right-0" : "left-0"
+                        } right-0 z-20 w-2/6 p-8 bg-white transition-transform duration-300 ease-in-out`}
                 >
-                  <LiaTimesSolid />
-                </button>
-              </header>
-              <main>{children}</main>
-              <footer className="flex justify-end mt-4"></footer>
-            </aside>
-          </div>,
-          document.body
+                    <header className="flex justify-between mb-4">
+                        {title && <h2 className="text-xl font-bold">{title}</h2>}
+                        <button
+                            onClick={closeDrawer}
+                            className="text-gray-600 hover:text-gray-800"
+                        >
+                            <LiaTimesSolid />
+                        </button>
+                    </header>
+                    <main>{children}</main>
+                    <footer className="flex justify-end mt-4"></footer>
+                </aside>
+            </div>,
+            document.body
         )
-      );
+    );
 }
 
-export default Drawer
+// export default Drawer
