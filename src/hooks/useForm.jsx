@@ -1,47 +1,53 @@
 import { useState } from "react";
+
 /**
  * Хук для управления обработки, обновления и отправки данных формы.
  *
- * @param {Object} initialState - Начальное состояние формы.
+ * @param {Object} initialState - Начальное состояние формы (Объект).
  * @param {Function} setNewState - Функция для обновления ссостояния.
  * @returns {formData} - Объект с состоянием формы.
  * @returns {handleInputChange} - Функция обработчик при смене данных в инпуте.
  * @returns {handleSubmit} - Функция обработчик при отправке формы.
  * @returns {resetForm} - Функция сброса состояния формы.
  */
-
 export function useForm(initialState, setNewState) {
+    // Состояние формы, хранит значения полей
+    const [formData, setFormData] = useState(initialState);
 
-    const [formData, setFormData] = useState(initialState); // Состояние формы 
+    // Обработчик при смене данных на элементе формы
+    const handleInputChange = (event) => {
+        // Извлекаем имя поля и его новое значение из события
+        const { name, value } = event.target;
 
-    const handleInputChange = (event) =>{
-        const { name, value } = event?.target; // Извлекаем имя поля и его значение из события 
-        // Обновление стейта 
+        // Обновляем state формы
         setFormData({
             ...formData,
-            [name]: value,
+            [name]: value, // Обновляем значение поля в state
         });
     };
 
+    // Обработчик при отправке данных
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // проверка на наличие пустых полей 
+        // Проверка наличия пустых полей
         const isEmptyField = Object.values(formData).some(
             (value) => value.trim() === ""
         );
 
-        if(isEmptyField){
+        if (isEmptyField) {
             console.log("Все поля обязательны к заполнению");
         } else {
-            console.log("Отправленые данные", formData);
-
-            setNewState && setNewState(formData); // Данные поля не содержат пустых полей 
-            resetForm(); // Очистка формы 
-        };
+            console.log("Отправленные данные:", formData);
+            // Данные формы не содержат пустых полей, выполняем отправку
+            setNewState && setNewState(formData);
+            // Очистка формы
+            resetForm();
+        }
     };
 
-    const resetForm = () => setFormData(initialState); // Функция для сброса формы 
+    // Функция для сброса состояния формы
+    const resetForm = () => setFormData(initialState);
 
     return {
         formData,
@@ -50,4 +56,4 @@ export function useForm(initialState, setNewState) {
     };
 }
 
-export default useForm
+export default useForm;
