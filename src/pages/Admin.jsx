@@ -12,6 +12,10 @@ const Admin = () => {
   // Стейт для скрытия/показа компонента Alert
   const [isAlertOpen, setAlertOpen] = useState(false);
 
+  // Стейт для показа детальной информации по товару в Drawer
+  const [selectedValue, setSelectedValue] = useState(null);
+
+
   // Использование абстрактного стора
   const { items, fetchItems, addItem } = useItemsStore();
 
@@ -22,14 +26,19 @@ const Admin = () => {
   /**
    * Функция для добавления нового продукта в список.
    */
-  const setNewProduct = () => {
+  const handleFormSubmit = (e) => {
+    event.preventDefault();
+
+    console.log("Отправленные данные:", formData);
+
     addItem(formData);
     setDrawerOpen(false); // Закрываем Drawer после добавления продукта
     setAlertOpen(true); // Показываем Alert
+    resetForm(); // Сбрасываем форму
   };
 
   // Использование кастомного хука для обработки данных
-  const { formData, handleSubmit, handleInputChange } = useForm(
+  const { formData, handleInput } = useForm(
     {
       name: "",
       category: "",
@@ -37,6 +46,13 @@ const Admin = () => {
     },
     setNewProduct
   );
+
+  // Функция для обработки двойного клика на строку таблицы
+  const handleRowDoubleClick = (rowData) => {
+    console.log(rowData);
+    setSelectedValue(rowData); // Помещаем в стейт выбранное значение из строки
+    setDrawerOpen(true); // Открываем Drawer
+  };
 
   return (
     <section className="admin">
@@ -59,6 +75,7 @@ const Admin = () => {
             { key: "price", title: "Цена" },
           ]}
           data={items}
+          onRowDoubleClick={handleRowDoubleClick}
         />
 
         {isDrawerOpen && (
@@ -68,7 +85,7 @@ const Admin = () => {
             title="Добавление нового товара"
           >
             <div className="w-full max-w-xs">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleFormSubmit}>
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
@@ -81,7 +98,7 @@ const Admin = () => {
                     name="name"
                     type="text"
                     value={formData?.name}
-                    onChange={handleInputChange}
+                    onChange={handleInput}
                     placeholder="Введите название"
                   />
                 </div>
@@ -97,7 +114,7 @@ const Admin = () => {
                     name="category"
                     type="text"
                     value={formData?.category}
-                    onChange={handleInputChange}
+                    onChange={handleInput}
                     placeholder="Введите категорию"
                   />
                 </div>
@@ -113,7 +130,7 @@ const Admin = () => {
                     name="price"
                     type="number"
                     value={formData?.price}
-                    onChange={handleInputChange}
+                    onChange={handleInput}
                     placeholder="Введите цену"
                   />
                 </div>
@@ -131,7 +148,7 @@ const Admin = () => {
         <Alert
           title="Добавление товара."
           subtitle="Товар был успешно добавлен."
-        //   variant="neutral"
+          //   variant="neutral"
           isOpen={isAlertOpen}
           onClose={() => setAlertOpen(false)}
         />

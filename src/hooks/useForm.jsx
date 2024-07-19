@@ -1,3 +1,4 @@
+import { validateForm } from "../utils/validators";
 import { useState } from "react";
 
 /**
@@ -10,49 +11,36 @@ import { useState } from "react";
  * @returns {handleSubmit} - Функция обработчик при отправке формы.
  * @returns {resetForm} - Функция сброса состояния формы.
  */
-export function useForm(initialState, setNewState) {
+export function useForm(initialState) {
     // Состояние формы, хранит значения полей
     const [formData, setFormData] = useState(initialState);
+    // Состояние для отслеживания ошибок валидации
+    const [formErorrs, setFormErorrs] = useState({});
 
-    // Обработчик при смене данных на элементе формы
-    const handleInputChange = (event) => {
-        // Извлекаем имя поля и его новое значение из события
+    const handleInput = (event) => {
         const { name, value } = event.target;
 
-        // Обновляем state формы
-        setFormData({
-            ...formData,
-            [name]: value, // Обновляем значение поля в state
-        });
-    };
+        const updateFormState = { ...formData, [name]: value };
 
-    // Обработчик при отправке данных
-    const handleSubmit = (event) => {
-        event.preventDefault();
+        setFormData(updateFormState);
 
-        // Проверка наличия пустых полей
-        const isEmptyField = Object.values(formData).some(
-            (value) => value.trim() === ""
-        );
+        const validationErorrs = {
+            ...formErorrs,
+            [name]: validateForm({ [name]: value })[name],
+        };
+        console.log('ошибки в хуке', validationErorrs);
 
-        if (isEmptyField) {
-            console.log("Все поля обязательны к заполнению");
-        } else {
-            console.log("Отправленные данные:", formData);
-            // Данные формы не содержат пустых полей, выполняем отправку
-            setNewState && setNewState(formData);
-            // Очистка формы
-            resetForm();
-        }
-    };
+        setFormErorrs(validationErorrs);
+    }
 
     // Функция для сброса состояния формы
     const resetForm = () => setFormData(initialState);
 
     return {
         formData,
-        handleSubmit,
-        handleInputChange,
+        formErorrs,
+        handleInput,
+        resetForm,
     };
 }
 
