@@ -44,7 +44,6 @@ const Admin = () => {
       category: "",
       price: "",
     },
-    setNewProduct
   );
 
   // Функция для обработки двойного клика на строку таблицы
