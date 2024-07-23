@@ -26,19 +26,19 @@ const Admin = () => {
   /**
    * Функция для добавления нового продукта в список.
    */
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    console.log("Отправленные данные:", formData);
+    console.log("Отправленные данные:", formValues);
 
-    addItem(formData);
+    addItem(formValues);
     setDrawerOpen(false); // Закрываем Drawer после добавления продукта
     setAlertOpen(true); // Показываем Alert
     resetForm(); // Сбрасываем форму
   };
 
   // Использование кастомного хука для обработки данных
-  const { formData, handleInput } = useForm(
+  const { formValues, handleInput, resetForm } = useForm(
     {
       name: "",
       category: "",
@@ -52,6 +52,11 @@ const Admin = () => {
     setSelectedValue(rowData); // Помещаем в стейт выбранное значение из строки
     setDrawerOpen(true); // Открываем Drawer
   };
+
+  const handleCloseDrawer = () =>{
+    setDrawerOpen(false);
+    setSelectedValue(null);
+  }
 
   return (
     <section className="admin">
@@ -80,7 +85,7 @@ const Admin = () => {
         {isDrawerOpen && (
           <Drawer
             isOpen={isDrawerOpen}
-            onClose={() => setDrawerOpen(false)}
+            onClose={handleCloseDrawer}
             title="Добавление нового товара"
           >
             <div className="w-full max-w-xs">
@@ -96,7 +101,7 @@ const Admin = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="name"
                     type="text"
-                    value={formData?.name}
+                    defaultValue={selectedValue?.name || formValues?.name}
                     onChange={handleInput}
                     placeholder="Введите название"
                   />
@@ -112,7 +117,7 @@ const Admin = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="category"
                     type="text"
-                    value={formData?.category}
+                    defaultValue={selectedValue?.category || formValues?.category}
                     onChange={handleInput}
                     placeholder="Введите категорию"
                   />
@@ -128,7 +133,7 @@ const Admin = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="price"
                     type="number"
-                    value={formData?.price}
+                    defaultValue={selectedValue?.price || formValues?.price}
                     onChange={handleInput}
                     placeholder="Введите цену"
                   />

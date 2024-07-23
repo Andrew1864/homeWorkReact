@@ -6,23 +6,23 @@ import { useState } from "react";
  *
  * @param {Object} initialState - Начальное состояние формы (Объект).
  * @param {Function} setNewState - Функция для обновления ссостояния.
- * @returns {formData} - Объект с состоянием формы.
+ * @returns {formValues} - Объект с состоянием формы.
  * @returns {handleInputChange} - Функция обработчик при смене данных в инпуте.
  * @returns {handleSubmit} - Функция обработчик при отправке формы.
  * @returns {resetForm} - Функция сброса состояния формы.
  */
 export function useForm(initialState) {
     // Состояние формы, хранит значения полей
-    const [formData, setFormData] = useState(initialState);
+    const [formValues, setFormValues] = useState(initialState);
     // Состояние для отслеживания ошибок валидации
     const [formErorrs, setFormErorrs] = useState({});
 
     const handleInput = (event) => {
         const { name, value } = event.target;
 
-        const updateFormState = { ...formData, [name]: value };
+        const updateFormState = { ...formValues, [name]: value };
 
-        setFormData(updateFormState);
+        setFormValues(updateFormState);
 
         const validationErorrs = {
             ...formErorrs,
@@ -34,10 +34,13 @@ export function useForm(initialState) {
     }
 
     // Функция для сброса состояния формы
-    const resetForm = () => setFormData(initialState);
+    const resetForm = () => {
+        setFormValues(initialState);
+        setFormErorrs({});
+    }
 
     return {
-        formData,
+        formValues,
         formErorrs,
         handleInput,
         resetForm,

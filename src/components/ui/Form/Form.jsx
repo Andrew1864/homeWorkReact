@@ -3,7 +3,7 @@ import Input from "../Input/Input";
 
 // Пример реализации валидаций с использованием хука useForm()
 const Form = () => {
-  const { formData, formErrors, handleInput } = useForm({
+  const { formValues, formErrors, handleInput } = useForm({
     text: "",
     email: "",
     password: "",
@@ -16,7 +16,7 @@ const Form = () => {
           label="Name"
           name="text"
           type="text"
-          value={formData?.text}
+          value={formValues?.text}
           onInput={handleInput}
           error={formErrors?.text}
           required
@@ -25,7 +25,7 @@ const Form = () => {
           label="Email"
           type="email"
           name="email"
-          value={formData?.email}
+          value={formValues?.email}
           onChange={handleInput}
           error={formErrors?.email}
           required
@@ -34,7 +34,7 @@ const Form = () => {
           label="Password"
           type="password"
           name="password"
-          value={formData?.password}
+          value={formValues?.password}
           onInput={handleInput}
           error={formErrors?.password}
           required

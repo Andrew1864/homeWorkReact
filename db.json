@@ -266,6 +266,42 @@
       "category": "weqwe",
       "price": "12",
       "id": 1
+    },
+    {
+      "name": "12312",
+      "category": "123123",
+      "price": "12312",
+      "id": 2
+    },
+    {
+      "name": "",
+      "category": "",
+      "price": "",
+      "id": 3
+    },
+    {
+      "name": "",
+      "category": "",
+      "price": "",
+      "id": 4
+    },
+    {
+      "name": "",
+      "category": "",
+      "price": "",
+      "id": 5
+    },
+    {
+      "name": "123123",
+      "category": "asddas",
+      "price": "121",
+      "id": 6
+    },
+    {
+      "name": "12",
+      "category": "222",
+      "price": "222",
+      "id": 7
     }
   ]
 }
