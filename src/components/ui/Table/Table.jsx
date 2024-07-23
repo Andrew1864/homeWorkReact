@@ -1,9 +1,11 @@
-import TableRow from "./Tableraow";
+import TableRow from "./TableRow";
+
 /**
  * Компонент таблицы.
  * @param {object} props - Свойства компонента.
  * @param {Array} props.headerData - Массив объектов (названия столбцов в шапке таблицы).
  * @param {Array} props.data - Массив объектов (содержимое таблицы).
+ * @param {function} props.onRowDoubleClick - Функция для обработки двойного клика на строку.
  * @returns {JSX.Element} Элемент JSX.
  */
 const Table = ({ data, headers, onRowDoubleClick }) => {
@@ -36,4 +38,5 @@ const Table = ({ data, headers, onRowDoubleClick }) => {
     </div>
   );
 };
+
 export default Table;

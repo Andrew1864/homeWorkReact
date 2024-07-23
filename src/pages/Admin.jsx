@@ -15,6 +15,7 @@ const Admin = () => {
   // Стейт для показа детальной информации по товару в Drawer
   const [selectedValue, setSelectedValue] = useState(null);
 
+  console.log("selectedvalue", selectedValue);
 
   // Использование абстрактного стора
   const { items, fetchItems, addItem } = useItemsStore();
@@ -23,28 +24,23 @@ const Admin = () => {
     fetchItems();
   }, [fetchItems]);
 
-  /**
-   * Функция для добавления нового продукта в список.
-   */
+  // Функция для обработки успешной отправки формы
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
     console.log("Отправленные данные:", formValues);
-
     addItem(formValues);
-    setDrawerOpen(false); // Закрываем Drawer после добавления продукта
+    setDrawerOpen(false); // Закрываем Drawer
     setAlertOpen(true); // Показываем Alert
     resetForm(); // Сбрасываем форму
   };
 
   // Использование кастомного хука для обработки данных
-  const { formValues, handleInput, resetForm } = useForm(
-    {
-      name: "",
-      category: "",
-      price: "",
-    },
-  );
+  const { formValues, handleInput, resetForm } = useForm({
+    name: "",
+    category: "",
+    price: "",
+  });
 
   // Функция для обработки двойного клика на строку таблицы
   const handleRowDoubleClick = (rowData) => {
@@ -53,10 +49,11 @@ const Admin = () => {
     setDrawerOpen(true); // Открываем Drawer
   };
 
-  const handleCloseDrawer = () =>{
+  // Функция для обработки закрытия Drawer и сбрасывания selectedValue
+  const hanldeCloseDrawer = () => {
     setDrawerOpen(false);
     setSelectedValue(null);
-  }
+  };
 
   return (
     <section className="admin">
@@ -85,8 +82,12 @@ const Admin = () => {
         {isDrawerOpen && (
           <Drawer
             isOpen={isDrawerOpen}
-            onClose={handleCloseDrawer}
-            title="Добавление нового товара"
+            onClose={hanldeCloseDrawer}
+            title={
+              selectedValue
+                ? "Детальная информация по товару"
+                : "Добавление нового товара"
+            }
           >
             <div className="w-full max-w-xs">
               <form onSubmit={handleFormSubmit}>
@@ -98,12 +99,13 @@ const Admin = () => {
                     Название товара
                   </label>
                   <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow read-only:bg-gray-200 read-only:cursor-not-allowed appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="name"
                     type="text"
                     defaultValue={selectedValue?.name || formValues?.name}
                     onChange={handleInput}
                     placeholder="Введите название"
+                    readOnly={selectedValue?.name}
                   />
                 </div>
                 <div className="mb-4">
@@ -114,12 +116,15 @@ const Admin = () => {
                     Категория товара
                   </label>
                   <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow read-only:bg-gray-200 read-only:cursor-not-allowed appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="category"
                     type="text"
-                    defaultValue={selectedValue?.category || formValues?.category}
+                    defaultValue={
+                      selectedValue?.category || formValues?.category
+                    }
                     onChange={handleInput}
                     placeholder="Введите категорию"
+                    readOnly={selectedValue?.category}
                   />
                 </div>
                 <div className="mb-4">
@@ -130,17 +135,19 @@ const Admin = () => {
                     Цена товара
                   </label>
                   <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow read-only:bg-gray-200 read-only:cursor-not-allowed appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="price"
                     type="number"
                     defaultValue={selectedValue?.price || formValues?.price}
                     onChange={handleInput}
                     placeholder="Введите цену"
+                    readOnly={selectedValue?.price}
                   />
                 </div>
                 <button
-                  className="bg-indigo-500 mb-4 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+                  className="disabled:bg-gray-200 disabled:cursor-not-allowed bg-indigo-500 mb-4 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
                   type="submit"
+                  disabled={!!selectedValue}
                 >
                   Add Item
                 </button>
@@ -152,7 +159,7 @@ const Admin = () => {
         <Alert
           title="Добавление товара."
           subtitle="Товар был успешно добавлен."
-          //   variant="neutral"
+          // variant="neutral"
           isOpen={isAlertOpen}
           onClose={() => setAlertOpen(false)}
         />

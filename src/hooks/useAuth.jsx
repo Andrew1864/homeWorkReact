@@ -1,0 +1,87 @@
+import { createContext, useContext, useState, useEffect, Children } from "react";
+
+
+/**
+ * Контекст для управления состоянием  аутентификации пользователя
+ * @type {React.Context}
+ */
+
+const AuthContext = createContext();
+
+/**
+ * Компонент для управления состоянием аутентификации пользователя
+ * @param {object} props - Свойства компонента
+ * @param {React.ReactNode} props.children - Дочерние элементы
+ * @returns {JSX.Element} - Компонент
+ */
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+
+        const userFromLocalStorage = localStorage.getItem("user"); // Проверка аутентификации при загрузке страницы
+
+        userFromLocalStorage && setUser(JSON.parse(userFromLocalStorage)); // Установка пользователя в состояние (если проверка пройдена)
+    }, []);
+
+    /**
+    * Функция для регистрации нового пользователя
+    * @param {object} userData - Данные пользователя
+    * @returns {Promise<void>}
+    */
+    const onRegistr = async (useData) => {
+        try {
+            const response = await fetch("http://localhost:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userData),
+            });
+            if (!response.ok) {
+                throw new Error("Ошибка регистрации пользователя");
+            };
+            const newUser = await response.json();
+        } catch (error) {
+            console.error("Ошибка при регистрации пользователя:", error);
+        };
+    };
+
+    /**
+   * Функция для входа пользователя
+   * @param {object} userData - Данные пользователя
+   * @returns {void}
+   */
+    const onLogin = (userData) => {
+        setUser(userData);
+
+        localStorage.setItem("user", JSON.stringify(userData));
+    };
+
+    /**
+   * Функция для входа пользователя
+   * @param {object} userData - Данные пользователя
+   * @returns {void}
+   */
+    const onLogout = () => {
+        setUser(null);
+        localStorage.removeItem("user");
+    };
+
+    const contextValue = { user, onRegistr, onLogin, onLogout };
+
+    return (
+        <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+      );
+
+      
+};
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+  
+    if (!context) {
+      throw new Error("useAuth must be used within AuthProiver");
+    }
+    return context;
+}
