@@ -31,17 +31,17 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
         // Если модально окно открыто и код выполняется на клиенте
         if (isOpen && typeof window !== "undefined") {
             // Добавляем слушатель события mousedown для закрытия модалки по клику вне
-            document.addEventListener("mousedown", handleOutsideClick);
+            document.addEventListener("mousedown", handleOutSideClick);
             // Добавляем слушатель события keydown (нажатие клавиши Esc)
-            document.addEventListener("keydown", handleKeyPress);
+            document.addEventListener("keydown", handlePressKey);
         };
         return () => {
             // Если  модальное окно открыто и код выполняется на клиенте
             if (isOpen && typeof window !== "undefined") {
                 // Удаляем слушатель события mousedown для закрытия модалки по клику вне
-                document.removeEventListener("mousedown", handleOutsideClick);
+                document.removeEventListener("mousedown", handleOutSideClick);
                 // Удаляем слушатель события keydown
-                document.removeEventListener("keydown", handleKeyPress);
+                document.removeEventListener("keydown", handlePressKey);
             }
         };
     }, [isOpen, onClose]);

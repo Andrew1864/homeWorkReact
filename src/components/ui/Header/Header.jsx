@@ -4,7 +4,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useProductsStore from "../../../store/useProductsStore";
 import { Modal } from "../Modal/Modal"
 import Input from "../Input/Input";
-
+import { useAuth } from "../../../hooks/useAuth"
 
 /** Массив пунктов меню */
 const navItems = [
@@ -18,13 +18,23 @@ const navItems = [
  * @returns {JSX.Element} Элемент header.
  */
 const Header = () => {
-  const location = useLocation();
+  const [showModal, setShowModal] = useState(false);
 
+  const { formValues, formErrors, handleInput, resetForm } = useForm({
+    text: "",
+    password: "",
+  });
+
+  const { onRegister } = useAuth();
+
+  console.log('данные формы', formValues);
+
+  const location = useLocation();
   const navigate = useNavigate(); // хук для роутинга
 
   const { getFavoriteProducts } = useProductsStore();
 
-  const favoriteProducts = getFavoriteProducts();
+  const favoritesCount = getFavoriteProducts()?.length;
 
   // Обработчик клика по карточке (для открытия сайдбара, например)
   const handleOpenFavorite = () => {
@@ -43,6 +53,16 @@ const Header = () => {
       (path === "/cards" && location?.pathname?.startsWith("/cards"))
     );
   };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    onRegister(formValues);
+
+    setShowModal(false);
+
+    resetForm();
+  }
 
   return (
     <header className="bg-white shadow fixed top-0 left-0 right-0 z-10">
@@ -66,6 +86,58 @@ const Header = () => {
               ))}
             </div>
           </nav>
+          <div id="buttons-wrapper" className="inline-flex items-center">
+            <button
+              type="button"
+              className="border-2 text-indigo-500 border-indigo-500 font-medium py-2 px-4 rounded"
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              className="ml-3 border-2 border-indigo-500 bg-indigo-500 text-white font-medium py-2 px-4 rounded"
+              onClick={() => setShowModal(true)}
+            >
+              Registeration
+            </button>
+          </div>
+          {showModal && (
+            <Modal
+              title="Registration form"
+              isOpen={showModal}
+              onClose={() => setShowModal(false)}
+            >
+              <form onSubmit={handleFormSubmit}>
+                <Input
+                  label="Login"
+                  name="text"
+                  type="text"
+                  value={formValues?.text}
+                  onInput={handleInput}
+                  placeholder="Enter your login"
+                  error={formErrors?.text}
+                  required
+                />
+                <Input
+                  label="Password"
+                  type="password"
+                  name="password"
+                  value={formValues?.password}
+                  onInput={handleInput}
+                  placeholder="Enter your password"
+                  error={formErrors?.password}
+                  required
+                />
+
+                <button
+                  className="bg-indigo-500 text-white font-medium py-2 px-4 rounded"
+                  type="submit"
+                >
+                  Submit data
+                </button>
+              </form>
+            </Modal>
+          )}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button type="button"
               onClick={handleOpenFavorite}
@@ -82,9 +154,9 @@ const Header = () => {
                 <path d="M12,4A5,5,0,1,1,7,9a5,5,0,0,1,5-5m0-2a7,7,0,1,0,7,7A7,7,0,0,0,12,2Z" />
                 <rect className="fill-none" width="32" height="32" />
               </svg>
-              {!!favoriteProducts?.length && (
+              {!!favoritesCount?.length && (
                 <span className="w-4 h-4 mb-1 text-xs/6 px-1 leading-4 text-white inline-flex justify-center justify-items-center bg-indigo-500 rounded-3xl absolute  bottom-4 right-0">
-                  {favoriteProducts?.length}
+                  {favoritesCount?.length}
                 </span>
               )}
             </button>
