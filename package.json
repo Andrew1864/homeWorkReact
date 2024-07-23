@@ -11,7 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fluentui/merge-styles": "^8.6.12",
     "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
     "json-server": "0.17.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

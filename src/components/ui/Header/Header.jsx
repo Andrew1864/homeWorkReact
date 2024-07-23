@@ -18,14 +18,16 @@ const navItems = [
  * @returns {JSX.Element} Элемент header.
  */
 const Header = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   const { formValues, formErrors, handleInput, resetForm } = useForm({
     text: "",
     password: "",
   });
 
-  const { onRegister } = useAuth();
+  const { user, onRegister, onLogin, onLogout } = useAuth();
 
   console.log('данные формы', formValues);
 
@@ -54,15 +56,37 @@ const Header = () => {
     );
   };
 
-  const handleFormSubmit = (event) => {
+  const handleRegisterForm = (event) => {
     event.preventDefault();
 
     onRegister(formValues);
 
-    setShowModal(false);
+    setShowRegisterModal(false);
 
     resetForm();
-  }
+  };
+
+  const handleLoginForm = (event) => {
+    event.preventDefault();
+
+    onRegister(formValues);
+
+    setShowLoginModal(false);
+
+    resetForm();
+  };
+
+    // Обработчик закрытия модального окна (логин)
+    const closeLoginModalAndResetForm = () => {
+      setShowRegisterModal(false);
+      resetForm(); // Сбрасываем форму
+    };
+  
+    // Обработчик закрытия модального окна (регистрация)
+    const closeRegisterModalAndResetForm = () => {
+      setShowRegisterModal(false);
+      resetForm(); // Сбрасываем форму
+    };
 
   return (
     <header className="bg-white shadow fixed top-0 left-0 right-0 z-10">
@@ -73,41 +97,67 @@ const Header = () => {
             <NavLink to="/" className="text-lg font-bold hover:text-gray-700">
               My App
             </NavLink>
-            <div className="space-x-4">
-              {navItems?.map((item) => (
-                <NavLink
-                  to={item?.path}
-                  key={item?.path}
-                  className={`px-3 py-2 rounded transition ${isActiveLink(item?.path) ? "text-blue-500" : ""
+            <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
+              {navItems.map((item) => {
+                // Скрыть пункт меню "Admin" если пользователь не администратор
+                if (
+                  item?.name === "Admin" &&
+                  (!user || user?.role !== "admin")
+                ) {
+                  return null;
+                }
+
+                return (
+                  <NavLink
+                    to={item.path}
+                    key={item.path}
+                    className={`text-zinc-800 inline-flex items-center px-1 pt-1 text-sm ${
+                      isActiveLink(item.path)
+                        ? "text-indigo-500 border-b-2 border-indigo-500"
+                        : "hover:text-indigo-500"
                     }`}
-                >
-                  {item?.name}
-                </NavLink>
-              ))}
+                  >
+                    {item.name}
+                  </NavLink>
+                );
+              })}
             </div>
           </nav>
           <div id="buttons-wrapper" className="inline-flex items-center">
-            <button
-              type="button"
-              className="border-2 text-indigo-500 border-indigo-500 font-medium py-2 px-4 rounded"
-            >
-              Login
-            </button>
-            <button
-              type="button"
-              className="ml-3 border-2 border-indigo-500 bg-indigo-500 text-white font-medium py-2 px-4 rounded"
-              onClick={() => setShowModal(true)}
-            >
-              Registeration
-            </button>
+            {!user ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setShowLoginModal(true)}
+                  className="border-2 text-indigo-500 border-indigo-500 font-medium py-2 px-4 rounded"
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  className="ml-3 border-2 border-indigo-500 bg-indigo-500 text-white font-medium py-2 px-4 rounded"
+                  onClick={() => setShowRegisterModal(true)}
+                >
+                  Register
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                className="ml-3 border-2 border-indigo-500 bg-indigo-500 text-white font-medium py-2 px-4 rounded"
+                onClick={onLogout}
+              >
+                Logout
+              </button>
+            )}
           </div>
-          {showModal && (
+          {showRegisterModal && (
             <Modal
               title="Registration form"
-              isOpen={showModal}
-              onClose={() => setShowModal(false)}
+              isOpen={showRegisterModal}
+              onClose={closeRegisterModalAndResetForm}
             >
-              <form onSubmit={handleFormSubmit}>
+              <form onSubmit={handleRegisterForm}>
                 <Input
                   label="Login"
                   name="text"
@@ -138,6 +188,45 @@ const Header = () => {
               </form>
             </Modal>
           )}
+          {
+            showLoginModal && (
+              <Modal
+              title="Login form"
+              isOpen={showLoginModal}
+              onClose={closeLoginModalAndResetForm}
+            >
+              <form onSubmit={handleLoginForm}>
+                <Input
+                  label="Login"
+                  name="login"
+                  type="text"
+                  value={formValues?.login}
+                  onInput={handleInput}
+                  placeholder="Enter your login"
+                  error={formErrors?.login}
+                  required
+                />
+                <Input
+                  label="Password"
+                  type="password"
+                  name="password"
+                  value={formValues?.password}
+                  onInput={handleInput}
+                  placeholder="Enter your password"
+                  error={formErrors?.password}
+                  required
+                />
+
+                <button
+                  className="bg-indigo-500 text-white font-medium py-2 px-4 rounded"
+                  type="submit"
+                >
+                  Submit data
+                </button>
+              </form>
+            </Modal>
+            )
+          }
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button type="button"
               onClick={handleOpenFavorite}

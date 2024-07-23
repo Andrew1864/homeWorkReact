@@ -303,5 +303,13 @@
       "price": "222",
       "id": 7
     }
+  ],
+  "users": [
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "admin",
+      "id": 1
+    }
   ]
 }
