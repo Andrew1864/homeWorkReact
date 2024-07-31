@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout.jsx";
 import Home from "../../pages/Home.jsx";
 import Cards from "../../pages/Cards.jsx";
+import Cart from "../../pages/Cart.jsx";
 import CardDetail from "../../pages/CardDetail.jsx";
 import FavoriteList from "../../pages/FavoriteLists.jsx";
 import Admin from "../../pages/Admin.jsx";
@@ -11,6 +12,7 @@ const routes = [
   { path: "/", element: <Home /> },
   { path: "cards", element: <Cards /> },
   { path: "cards/:id", element: <CardDetail /> },
+  { path: "cart", element: <Cart /> },
   { path: "Favorites", element: <FavoriteList /> },
   { path: "Admin", element: <Admin /> }
 ];

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
@@ -6,10 +7,23 @@ import useProductsStore from "../store/useProductsStore.js";
 const CardDetail = () => {
   const { id } = useParams();
 
-  const { getProductById, onToggleFavorite } = useProductsStore();
+  const { getProductById, onToggleFavorite, addToCart } = useProductsStore();
+
+    // Стейт для показа/скрытия и передачи сообщения в Alert
+    const [alertState, setAlertState] = useState({
+      isOpen: false,
+      title: "",
+      subtitle: "",
+    });
 
   // // Находим карточку по id.
   const product = getProductById(id)
+
+  // Обработчик добавления товара в корзину
+  const hanleAddToCart = () =>{
+    addToCart(product);
+    setAlertState({isOpen: true, title: "Добавление товара", subtitle: 'Товар успешно добавлен в корзину.'});
+  }
 
   return (
     <section className="card-details">
@@ -20,7 +34,9 @@ const CardDetail = () => {
           <IoIosArrowBack className="mr-1 w-5 h-5" />
           Back
         </Link>
-        <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+        <h2 className="mb-4 text-4xl font-bold text-zinc-800">
+          {product?.name}
+        </h2>
         <div className="max-w-md rounded shadow-lg relative">
           <img className="w-full" src={product?.imgSrc} alt={product?.title} />
           <button
@@ -47,7 +63,9 @@ const CardDetail = () => {
               </div>
             )}
             <div className="text-lg font-bold mb-2">{product?.price}$</div>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            <button 
+            onClick={hanleAddToCart}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
               Add to Cart
             </button>
           </div>

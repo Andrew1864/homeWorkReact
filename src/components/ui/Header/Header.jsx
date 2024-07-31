@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useForm from "../../../hooks/useForm";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useProductsStore from "../../../store/useProductsStore";
@@ -18,30 +18,45 @@ const navItems = [
  * @returns {JSX.Element} Элемент header.
  */
 const Header = () => {
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);  // Стейт для показа/скрытия модального окна (для регистрации).
 
-  const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false);  // Стейт для показа/скрытия модального окна (для входа).
 
+    // Использование кастомного хука для обработки данных
   const { formValues, formErrors, handleInput, resetForm } = useForm({
     text: "",
     password: "",
   });
 
-  const { user, onRegister, onLogin, onLogout } = useAuth();
+  const { user, onRegister, onLogin, onLogout } = useAuth(); // Кастомный хук для регистрации, входа, выхода
 
-  console.log('данные формы', formValues);
+  // console.log('данные формы', formValues);
 
   const location = useLocation();
+
   const navigate = useNavigate(); // хук для роутинга
 
-  const { getFavoriteProducts } = useProductsStore();
+  const { getFavoriteProducts, getAllCartProducts, cart } = useProductsStore();
+
+  const [ cartCount, setCartCount ] = useState(0);  // Стейт для хранения количества товаров в корзине
 
   const favoritesCount = getFavoriteProducts()?.length;
+
+  useEffect(() => {
+    setCartCount(getAllCartProducts());
+  }, [cart, getAllCartProducts]);
+
 
   // Обработчик клика по карточке (для открытия сайдбара, например)
   const handleOpenFavorite = () => {
     navigate(`/Favorites`);
   };
+
+    // Показ страницы корзина товаров
+    const handleToCartOpen = () => {
+      navigate(`/cart`);
+    };
+  
 
 
   /**
@@ -69,7 +84,7 @@ const Header = () => {
   const handleLoginForm = (event) => {
     event.preventDefault();
 
-    onRegister(formValues);
+    onLogin(formValues);
 
     setShowLoginModal(false);
 
@@ -91,7 +106,7 @@ const Header = () => {
   return (
     <header className="bg-white shadow fixed top-0 left-0 right-0 z-10">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="relative flex justify-between h-16">
+        <div className="relative flex justify-between h-24">
           <img src="https://tailus.io/sources/blocks/company-site/preview/images/clients/airbnb.svg" className="p-4 w-28" alt="Your Company"></img>
           <nav className="container mx-auto flex justify-conte items-center">
             <NavLink to="/" className="text-lg font-bold hover:text-gray-700">
@@ -162,10 +177,10 @@ const Header = () => {
                   label="Login"
                   name="text"
                   type="text"
-                  value={formValues?.text}
+                  value={formValues?.login}
                   onInput={handleInput}
                   placeholder="Enter your login"
-                  error={formErrors?.text}
+                  error={formErrors?.login}
                   required
                 />
                 <Input
@@ -228,9 +243,11 @@ const Header = () => {
             )
           }
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button type="button"
+            <button  type="button"
               onClick={handleOpenFavorite}
-              className="relative bg-transparent p-1 mr-3 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className={`relative bg-transparent p-1 mr-3 rounded-full text-gray-400 hover:text-gray-500   ${
+                location?.pathname === "/favorites" ? "text-indigo-500" : ""
+              }`}
             >
               <svg
                 fill="currentColor"
@@ -243,15 +260,19 @@ const Header = () => {
                 <path d="M12,4A5,5,0,1,1,7,9a5,5,0,0,1,5-5m0-2a7,7,0,1,0,7,7A7,7,0,0,0,12,2Z" />
                 <rect className="fill-none" width="32" height="32" />
               </svg>
-              {!!favoritesCount?.length && (
+              {!!favoritesCount && (
                 <span className="w-4 h-4 mb-1 text-xs/6 px-1 leading-4 text-white inline-flex justify-center justify-items-center bg-indigo-500 rounded-3xl absolute  bottom-4 right-0">
-                  {favoritesCount?.length}
+                  {favoritesCount}
                 </span>
               )}
             </button>
             <button
+            id="Cart"
+              onClick={handleToCartOpen}
               type="button"
-              className="bg-transparent p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className={`relative bg-transparent p-1 mr-3 rounded-full text-gray-400 hover:text-gray-500   ${
+                location?.pathname === "/cart" ? "text-indigo-500" : ""
+              }`}
             >
               <svg
                 fill="currentColor"
@@ -263,6 +284,11 @@ const Header = () => {
                 <path d="M17 24H21V28H17zM24 24H28V28H24zM17 17H21V21H17zM24 17H28V21H24z"></path>
                 <path d="M28,11h-6V7c0-1.7-1.3-3-3-3h-6c-1.7,0-3,1.3-3,3v4H4c-0.6,0-1,0.4-1,1c0,0.1,0,0.1,0,0.2l1.9,12.1c0.1,1,1,1.7,2,1.7H15v-2	H6.9L5.2,13H28V11z M12,7c0-0.6,0.4-1,1-1h6c0.6,0,1,0.4,1,1v4h-8V7z"></path>
               </svg>
+              {!!cartCount && (
+                <span className="w-5 h-5 text-xs px-1 leading-5 text-white inline-flex items-center justify-center bg-indigo-500 rounded-full absolute top-[-4px] right-[-4px]">
+                  {cartCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
