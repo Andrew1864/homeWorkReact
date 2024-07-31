@@ -1,3 +1,28 @@
+// import { useContext } from "react";
+// import { AuthContext } from "../context/AuthProvider";
+
+// /**
+//  * Хук для доступа к контексту аутентификации
+//  * @returns {object} - Значение контекста
+//  */
+// export const useAuth = () => {
+//   const context = useContext(AuthContext);
+
+//   if (!context)
+//     throw new Error("useAuth должен использоваться внутри AuthProvider");
+
+//   // Для отладки
+//   // const { user } = context;
+
+//   // useEffect(() => {
+//   //   if (user !== null) {
+//   //     console.log("useAuth: User changed", user);
+//   //   }
+//   // }, [user]);
+//   // Конец отладки
+
+//   return context;
+// };
 
 import { createContext, useContext, useState, useEffect } from "react";
 
@@ -20,12 +45,17 @@ export const AuthProvider = ({ children }) => {
    */
   const [user, setUser] = useState(null);
 
+  // Состояние загрузки
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     // Проверка аутентификации при загрузке страницы
     const userFromLocalStorage = localStorage.getItem("user");
 
     // Установка пользователя в состояние (если проверка пройдена)
     userFromLocalStorage && setUser(JSON.parse(userFromLocalStorage));
+
+    setLoading(false); // Завершаем состояние загрузки
   }, []);
 
   /**
@@ -130,7 +160,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  const contextValue = { user, onRegister, onLogin, onLogout };
+  const contextValue = { user, loading, onRegister, onLogin, onLogout };
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
@@ -147,6 +177,5 @@ export const useAuth = () => {
   if (!context) {
     throw new Error("useAuth must be used within AuthProiver");
   }
-
   return context;
 };

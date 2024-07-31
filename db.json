@@ -310,6 +310,100 @@
       "password": "123456789",
       "role": "admin",
       "id": 1
+    },
+    {
+      "text": "",
+      "password": "123456789",
+      "login": "admin",
+      "role": "user",
+      "id": 2
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 3
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 4
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 5
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 6
+    },
+    {
+      "text": "user",
+      "password": "123456789",
+      "role": "user",
+      "id": 7
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 8
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 9
+    },
+    {
+      "text": "",
+      "password": "123456789",
+      "login": "admin",
+      "role": "user",
+      "id": 10
+    },
+    {
+      "text": "",
+      "password": "123456789",
+      "login": "admin",
+      "role": "user",
+      "id": 11
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 12
+    },
+    {
+      "text": "user",
+      "password": "123456789",
+      "role": "user",
+      "id": 13
+    },
+    {
+      "text": "",
+      "password": "123456789",
+      "login": "user",
+      "role": "user",
+      "id": 14
+    },
+    {
+      "text": "admin",
+      "password": "123456789",
+      "role": "user",
+      "id": 15
+    },
+    {
+      "text": "admin",
+      "password": "00000000",
+      "role": "user",
+      "id": 16
     }
   ]
 }
